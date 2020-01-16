@@ -1,0 +1,16 @@
+*.pyc
+*.pth
+*.png
+*.jpg
+.idea
+.vscode
+data/
+result/
+output/
+exp/
+data
+result
+output
+exp
+!captions/dsbn.jpg
+!captions/stage2.jpg
