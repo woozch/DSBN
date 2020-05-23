@@ -106,6 +106,35 @@ class TwoInputSequential(nn.Module):
             input1, input2 = module(input1, input2)
         return input1, input2
 
+    
+def resnet18dsbn(pretrained=False, **kwargs):
+    """Constructs a ResNet-18 model.
+    Args:
+        pretrained (bool): If True, returns a model pre-trained on ImageNet
+    """
+    model = DSBNResNet(BasicBlock, [2, 2, 2, 2], **kwargs)
+    if pretrained:
+        updated_state_dict = _update_initial_weights_dsbn(model_zoo.load_url(model_urls['resnet18']),
+                                                          num_classes=model.num_classes,
+                                                          num_domains=model.num_domains)
+        model.load_state_dict(updated_state_dict, strict=False)
+
+    return model
+
+
+def resnet34dsbn(pretrained=False, **kwargs):
+    """Constructs a ResNet-34 model.
+    Args:
+        pretrained (bool): If True, returns a model pre-trained on ImageNet
+    """
+    model = DSBNResNet(BasicBlock, [3, 4, 6, 3], **kwargs)
+    if pretrained:
+        updated_state_dict = _update_initial_weights_dsbn(model_zoo.load_url(model_urls['resnet34']),
+                                                          num_classes=model.num_classes,
+                                                          num_domains=model.num_domains)
+        model.load_state_dict(updated_state_dict, strict=False)
+
+    return model
 
 def resnet50dsbn(pretrained=False, **kwargs):
     """Constructs a ResNet-50 model.
@@ -268,6 +297,38 @@ class DSBNResNet(nn.Module):
             return x, feat
         else:
             return x
+
+        
+class BasicBlock(nn.Module):
+    expansion = 1
+
+    def __init__(self, inplanes, planes, stride=1, downsample=None, num_domains=2):
+        super(BasicBlock, self).__init__()
+        self.conv1 = conv3x3(inplanes, planes, stride)
+        self.bn1 = DomainSpecificBatchNorm2d(planes, num_domains)
+        self.relu = nn.ReLU(inplace=True)
+        self.conv2 = conv3x3(planes, planes)
+        self.bn2 = DomainSpecificBatchNorm2d(planes, num_domains)
+        self.downsample = downsample
+        self.stride = stride
+
+    def forward(self, x, domain_label):
+        residual = x
+
+        out = self.conv1(x)
+        out, _ = self.bn1(out, domain_label)
+        out = self.relu(out)
+
+        out = self.conv2(out)
+        out, _ = self.bn2(out, domain_label)
+
+        if self.downsample is not None:
+            residual, _ = self.downsample(x, domain_label)
+
+        out += residual
+        out = self.relu(out)
+
+        return out, domain_label
 
 
 class Bottleneck(nn.Module):
