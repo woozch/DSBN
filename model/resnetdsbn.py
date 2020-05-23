@@ -12,7 +12,7 @@ from itertools import islice
 
 _pair = _ntuple(2)
 
-__all__ = ['resnet50dsbn', 'resnet101dsbn', 'resnet152dsbn']
+__all__ = ['resnet18dsbn', 'resnet34dsbn', 'resnet50dsbn', 'resnet101dsbn', 'resnet152dsbn']
 
 model_urls = {
     'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
