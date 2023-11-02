@@ -3,6 +3,7 @@ Pytorch implementation of Domain-Specific Batch Normalization for Unsupervised D
 ![BN vs DSBN](captions/dsbn.jpg)
 
 Woong-Gi Chang, Tackgeun You, Seonguk Seo, Suha Kwak, Bohyung Han
+
 The first author name has changed from Woong-Gi Chang to Woojae Chang.
 
 ## Citation
