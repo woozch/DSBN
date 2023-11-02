@@ -2,6 +2,9 @@
 Pytorch implementation of Domain-Specific Batch Normalization for Unsupervised Domain Adaptation (CVPR2019).
 ![BN vs DSBN](captions/dsbn.jpg)
 
+Woong-Gi Chang, Tackgeun You, Seonguk Seo, Suha Kwak, Bohyung Han
+The first author name has changed from Woong-Gi Chang to Woojae Chang.
+
 ## Citation
 If you want to cite our work, follow the link [arXiv](https://arxiv.org/abs/1906.03950). 
 
